@@ -19,7 +19,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/sanity/*": ["./sanity/*"],
+      "@/sanity/queries": ["./sanity/queries.ts"],
+      "@/sanity/client": ["./sanity/client.ts"]
     }
   },
   "include": [

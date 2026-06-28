@@ -13,16 +13,29 @@ export default function Navbar() {
 
       <div className="flex items-center gap-4">
         <Link href="/products">Products</Link>
+        
         <Show when="signed-in">
           <WelcomeBanner />
+          <UserButton>
+            <UserButton.MenuItems>
+              <UserButton.Link
+                label="My Account"
+                labelIcon={<span>👤</span>}
+                href="/account"
+              />
+              <UserButton.Link
+                label="My Orders"
+                labelIcon={<span>📦</span>}
+                href="/account/orders"
+              />
+            </UserButton.MenuItems>
+          </UserButton>
         </Show>
+
         <Show when="signed-out">
           <SignInButton mode="modal">
             <button className="text-sm">Sign in</button>
           </SignInButton>
-        </Show>
-        <Show when="signed-in">
-          <UserButton />
         </Show>
       </div>
     </nav>
