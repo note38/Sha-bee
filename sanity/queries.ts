@@ -104,3 +104,61 @@ export async function getCategoryWithProducts(slug: string) {
     }
   `, { slug })
 }
+export async function getHomepage() {
+  return client.fetch(`
+    *[_type == "homepage"][0] {
+      heroHeading,
+      heroSubheading,
+      heroCtaLabel,
+      heroCtaLink,
+      "heroImage": heroImage.asset->url,
+
+      "featuredProducts": featuredProducts[]->{ 
+        _id, name, price, inStock,
+        "slug": slug.current,
+        "image": images[0].asset->url,
+        category->{ name, "slug": slug.current }
+      },
+
+      "featuredCategories": featuredCategories[]->{
+        _id, name,
+        "slug": slug.current,
+        "image": image.asset->url
+      }
+    }
+  `)
+}
+
+export type ProductFilters = {
+  category?: string
+  sort?: 'newest' | 'price-asc' | 'price-desc'
+  inStock?: boolean
+}
+
+export async function getFilteredProducts(filters: ProductFilters = {}) {
+  const { category, sort = 'newest', inStock } = filters
+
+  // build filter conditions array
+  const conditions = ['_type == "product"']
+  if (category) conditions.push('category->slug.current == $category')
+  if (inStock) conditions.push('inStock == true')
+
+  // map sort param to GROQ order clause
+  const sortMap = {
+    newest: '_createdAt desc',
+    'price-asc': 'price asc',
+    'price-desc': 'price desc',
+  }
+  const order = sortMap[sort] ?? '_createdAt desc'
+
+  const query = `
+    *[${conditions.join(' && ')}] | order(${order}) {
+      _id, name, price, inStock,
+      "slug": slug.current,
+      "image": images[0].asset->url,
+      category->{ name, "slug": slug.current }
+    }
+  `
+
+  return client.fetch(query, { category })
+}
