@@ -25,6 +25,7 @@ export default async function HomePage() {
                           justify-center bg-gray-900 text-white overflow-hidden">
         {heroImage && (
           <Image src={heroImage} alt="Hero" fill
+            sizes="100vw"
             className="object-cover opacity-50" priority />
         )}
         <div className="relative z-10 text-center px-4 max-w-2xl mx-auto">
@@ -53,6 +54,7 @@ export default async function HomePage() {
                            aspect-video group bg-gray-100">
                 {cat.image && (
                   <Image src={cat.image} alt={cat.name} fill
+                    sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-cover group-hover:scale-105 transition duration-300" />
                 )}
                 <div className="absolute inset-0 bg-black/30 flex items-end p-4">

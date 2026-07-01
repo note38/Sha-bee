@@ -49,6 +49,8 @@ export default function ProductFilters({ categories }: { categories: Category[] 
 
             {/* Sort dropdown */}
             <select
+                id="product-sort"
+                name="sort"
                 value={activeSort}
                 onChange={(e) => updateParam('sort', e.target.value)}
                 className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white">
@@ -60,6 +62,8 @@ export default function ProductFilters({ categories }: { categories: Category[] 
             {/* In-stock toggle */}
             <label className="flex items-center gap-2 text-sm cursor-pointer">
                 <input
+                    id="filter-in-stock"
+                    name="inStock"
                     type="checkbox"
                     checked={activeInStock}
                     onChange={(e) => updateParam('inStock', e.target.checked ? 'true' : '')}
