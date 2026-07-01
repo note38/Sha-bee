@@ -12,9 +12,10 @@ export async function generateStaticParams() {
 export default async function CategoryPage({
     params,
 }: {
-    params: { slug: string }
+    params: Promise<{ slug: string }>
 }) {
-    const { category, products } = await getCategoryWithProducts(params.slug)
+    const { slug } = await params
+    const { category, products } = await getCategoryWithProducts(slug)
 
     if (!category) notFound()  // shows Next.js 404 page
 
